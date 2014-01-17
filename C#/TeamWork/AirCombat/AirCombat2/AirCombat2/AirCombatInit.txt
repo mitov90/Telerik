@@ -1,0 +1,44 @@
+﻿initAircombat
+consoleWidth=40            //any comments allowed after all keywords, spaced with any of separators {" ","=","/",";"} 
+consoleHeight=60 //these values can be on any line of the file
+offsetWidth=12  
+offsetHeight=15
+defaultSpeed=50      //delay
+speedFactor=1         //multiply speed for next level
+defaultEnemies=3          //total enemies on generate on step or in list??  
+maxEnemies=10             //total enemies to generate or in the list??
+friendsFactor=5 [1..100]    //ако се ползва може да определи броя на гориво и т.н. спрямо врагове, т.е ако е 5 в рандом генератора 1..100 0..4 за френд1, 5..9 френд2
+numberOfEnemies=2;        //length of enemy array  
+numberOfFriends=3;        //length of friends array 
+shootSpeed=-3             //CONSTANT speed
+shootReload=5
+lifeReload=3              //if full life=10, for example
+fuelReload=250             //if total=1000
+ship width=9;height=6;color=white //format of the color?	
+    ^    
+   | |   
+  ||0||  
+ /  .  \ 
+|--| |--|
+  /|||\  
+friend width=3 height=3 color=white name=FUEL // name needed for reaction
+FFF
+FFF
+FFF
+friend width=3 height=3 color=white name=LIFE 
+LLL
+LLL
+LLL
+enemie width=3 height=3 color=red // name not needed if with equal qualities
+EEE
+EEE
+EEE
+enemie width=1 height=3 color=blue
+R
+R
+R
+shoot width=1 height=3 color=yellow
+*
+*
+*
+endOfInit

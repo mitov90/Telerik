@@ -1,0 +1,14 @@
+TIOBE Programming Community Index for October 2013
+
+1		C
+2		Java
+3		Objective-C	
+4		C++			  
+5		PHP			  
+6		C#			  
+
+C - low-level language, no OOP, performance
+Java - multiple platforms
+Objective-C - iOS and Mac
+C++ - OOP
+PHP - server-side scripting 
