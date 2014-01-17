@@ -21,7 +21,7 @@ class ExtractSentace
     }
      private static IEnumerable<string> GetSentencesContaining(string input, string wordToFind)
     {
-        string pattern = String.Format(@"[^\.]*?\b{0}\b[^\.?!]*[\.?!]", wordToFind);
+        string pattern = String.Format(@"[^.]*?\b{0}\b[^.?!]*[\.?!]", wordToFind);
 
         MatchCollection matches = Regex.Matches(input, pattern);
 
