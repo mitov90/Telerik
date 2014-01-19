@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class KeyboardInterface : IUserInterface
+public class KeyboardInterface : IUserInterface // we define what each key does (according to their purpose).
 {
     public void ProcessInput()
     {
@@ -38,7 +38,7 @@ public class KeyboardInterface : IUserInterface
             }
         }
 
-        else if ( keyInfo.Key.Equals(ConsoleKey.Spacebar) )
+        else if ( keyInfo.Key.Equals(ConsoleKey.Spacebar) ) // shooting
         {
             if ( this.OnActionPressed != null )
             {

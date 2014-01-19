@@ -1,6 +1,6 @@
 ﻿using System;
 
-public interface IUserInterface
+public interface IUserInterface // definition of the use of keys.
 {
     event EventHandler OnLeftPressed;
 

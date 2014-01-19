@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
-class Life : MovingObject
+class Life : MovingObject // similar to the Fire and fuel object.
 {
     public new const string CollisionGroupString = "life";
 

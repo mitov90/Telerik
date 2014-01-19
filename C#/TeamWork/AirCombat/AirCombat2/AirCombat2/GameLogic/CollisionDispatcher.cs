@@ -2,14 +2,14 @@
 
 public static class CollisionDispatcher
 {
-    public static void HandleCollisions(List<MovingObject> movingObjects, List<GameObject> staticObjects)
+    public static void HandleCollisions(List<MovingObject> movingObjects, List<GameObject> staticObjects) // this method calls a second method for a collision of moving andstatic onjects
     {
         HandleMovingWithStaticCollisions(movingObjects, staticObjects);
     }
 
-    private static void HandleMovingWithStaticCollisions(List<MovingObject> movingObjects, List<GameObject> staticObjects)
+    private static void HandleMovingWithStaticCollisions(List<MovingObject> movingObjects, List<GameObject> staticObjects) // 
     {
-        foreach ( var movingObject in movingObjects )
+        foreach ( var movingObject in movingObjects ) // there must be both a horizontal and vertical coincidence for a collision to happen.
         {
             int verticalIndex = VerticalCollisionIndex(movingObject, staticObjects);
             int horizontalIndex = HorizontalCollisionIndex(movingObject, staticObjects);
@@ -73,7 +73,7 @@ public static class CollisionDispatcher
         }
     }
 
-    public static int VerticalCollisionIndex(MovingObject moving, List<GameObject> objects)
+    public static int VerticalCollisionIndex(MovingObject moving, List<GameObject> objects) // returns the profile of all vertical collisions. A profile includes a list of coordinates of points in the matrix.
     {
         List<MatrixCoords> profile = moving.GetCollisionProfile();
 
@@ -89,7 +89,7 @@ public static class CollisionDispatcher
         return collisionIndex;
     }
 
-    public static int HorizontalCollisionIndex(MovingObject moving, List<GameObject> objects)
+    public static int HorizontalCollisionIndex(MovingObject moving, List<GameObject> objects) // returns the profile of all horizontal collisions. A profile includes a list of coordinates of points in the matrix.
     {
         List<MatrixCoords> profile = moving.GetCollisionProfile();
 
@@ -105,7 +105,7 @@ public static class CollisionDispatcher
         return collisionIndex;
     }
 
-    public static int DiagonalCollisionIndex(MovingObject moving, List<GameObject> objects)
+    public static int DiagonalCollisionIndex(MovingObject moving, List<GameObject> objects) // returns the profile of all diagonal collisions. Not in use.
     {
         List<MatrixCoords> profile = moving.GetCollisionProfile();
 
@@ -121,7 +121,7 @@ public static class CollisionDispatcher
         return collisionIndex;
     }
 
-    private static int GetCollisionIndex(MovingObject moving, ICollection<GameObject> objects, List<MatrixCoords> movingProfile)
+    private static int GetCollisionIndex(MovingObject moving, ICollection<GameObject> objects, List<MatrixCoords> movingProfile) // returns the index of the current collision.
     {
         int collisionIndex = 0;
 
@@ -143,7 +143,7 @@ public static class CollisionDispatcher
         return -1;
     }
 
-    private static bool ProfilesIntersect(List<MatrixCoords> firstProfile, List<MatrixCoords> secondProfile)
+    private static bool ProfilesIntersect(List<MatrixCoords> firstProfile, List<MatrixCoords> secondProfile) // returns a bollean answer on whether a profile intersects with another profile.
     {
         foreach ( var firstCoord in firstProfile )
         {

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 
 public class MainMenu
 {
-    private static int consoleWidth = 40; // can be read from the file
-    private static int consoleHeight = 60; // can be read from the file
-    private static int offsetWidth = 12; // can be read from the file
-    private static int offsetHeight = 15; // can be read from the file
+    public static int consoleWidth; // can be read from the file
+    public static int consoleHeight; // can be read from the file
+    public static int offsetWidth; // can be read from the file
+    public static int offsetHeight; // can be read from the file
 
     public static int Menu()
     {
@@ -45,7 +46,7 @@ public class MainMenu
                 @"    /      |      \    ",
                 @"  */       |       \*  "
             };
-
+        //select from given options
         string[] titleSelection = new string[]
             {
                 @"         START         ",
@@ -125,14 +126,47 @@ public class MainMenu
 
     public static void StartMainMenu()
     {
-        Init.ReadInitFile();
-
+        
         switch ( Menu() )
         {
             case 0:
                 Console.Clear();
                 return;
-            case 1: //TODO: print some HELP
+            case 1:
+                Console.Clear();
+                try
+                {
+                    string pathFile = @"..\..\help.txt";
+                    StreamReader reader = new StreamReader(pathFile);
+                    using (reader)
+                    {
+                        string help = reader.ReadToEnd();
+                        Console.WriteLine(help);
+                    }
+
+                }
+                catch (FileNotFoundException fe)
+                {
+                    Console.WriteLine(fe.Message);
+                    System.Environment.Exit(0);
+                }
+                catch (ArgumentException fe)
+                {
+                    Console.WriteLine(fe.Message);
+                    System.Environment.Exit(0);
+                }
+                catch (DirectoryNotFoundException fe)
+                {
+                    Console.WriteLine(fe.Message);
+                    System.Environment.Exit(0);
+                }
+                catch (IOException fe)
+                {
+                    Console.WriteLine(fe.Message);
+                    System.Environment.Exit(0);
+                }
+                Console.ReadLine();
+                Console.Clear();
                 break;
             case 2:
                 System.Environment.Exit(0);

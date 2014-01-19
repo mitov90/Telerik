@@ -6,18 +6,18 @@ public class Ship : GameObject
 {
 
     private static int _health = 100;
-    private static int _fuel = StartGame.FuelBonus * StartGame.ShootTimeout;
+    private static int _fuel = StartGame.FuelBonus * StartGame.ShootTimeout; // initial parameters.
     private static int _timeOut; 
 
-    public static int Distance { get; set; }
+    public static int Distance { get; set; } // at each iteration this variable is increased by one.
     public new const string CollisionGroupString = "ship";
 
-    public Ship(MatrixCoords topLeft, char[,] body)
+    public Ship(MatrixCoords topLeft, char[,] body) // constructor (template)
         : base(topLeft, body)
     {
     }
 
-    public void Shoot(Engine gameEngine)
+    public void Shoot(Engine gameEngine) // this methods creates a new objec of the shooting type and checks the time passed after a shooting.
     {
         if (_timeOut <= 0)
         {
@@ -28,17 +28,17 @@ public class Ship : GameObject
     }
 
     #region Move
-    public void MoveLeft()
+    public void MoveLeft() // the four movement methids follow below:
     {
         if ( topLeft.Col > 0 )
-            this.topLeft.Col--;
+            this.topLeft.Col -= 3;
         _fuel--;
     }
 
     public void MoveRight()
     {
         if ( topLeft.Col + body.GetLength(1) < StartGame.WorldCols )
-            this.topLeft.Col++;
+            this.topLeft.Col += 3;
         _fuel--;
 
     }
@@ -60,17 +60,17 @@ public class Ship : GameObject
     }
     #endregion
 
-    public override string GetCollisionGroupString()
+    public override string GetCollisionGroupString() // returns the name of the object (ship)
     {
         return Ship.CollisionGroupString;
     }
 
-    public override bool CanCollideWith(string otherCollisionGroupString)
+    public override bool CanCollideWith(string otherCollisionGroupString) // with which object it is possible to collide.
     {
         return otherCollisionGroupString == Ship.CollisionGroupString || otherCollisionGroupString == "racket" || otherCollisionGroupString == "fuel" || otherCollisionGroupString == "life";
     }
 
-    public override void Update()
+    public override void Update() // checks and updates life and fuel capacity and ends game if necessary.
     {
         if ( _health <= 0 || _fuel <= 0 )
         {
@@ -81,7 +81,7 @@ public class Ship : GameObject
         _timeOut--;
     }
 
-    public override void RespondToCollision(CollisionData collisionData)
+    public override void RespondToCollision(CollisionData collisionData) // reaction after collision.
     {
         foreach ( var str in collisionData.HitObjectsCollisionGroupStrings )
         {
@@ -94,7 +94,7 @@ public class Ship : GameObject
         }
     }
 
-    public static string GetDetail()
+    public static string GetDetail() // returns the names and the values of the game tracker menu. 
     {
         StringBuilder scene = new StringBuilder();
         scene.AppendLine("Distance: " + Distance);
@@ -103,17 +103,17 @@ public class Ship : GameObject
         return scene.ToString();
     }
 
-    private void RacketCollision()
+    private void RacketCollision() // reduces the life capacity at collision with a torpedo.
     {
         _health -= StartGame.RacketDamage;
     }
 
-    private void LifeCollision()
+    private void LifeCollision() // increases the life capacity at collision with a life object.
     {
         _health += StartGame.LifeSupport;
     }
 
-    private void FuelCollision()
+    private void FuelCollision() // reduces the life capacity at collision with a fuel tank.
     {
         _fuel += StartGame.FuelBonus;
     }

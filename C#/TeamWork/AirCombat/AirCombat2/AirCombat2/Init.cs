@@ -22,7 +22,7 @@ public class Init
     }
     public static void ReadInitFile()
     {
-        string[] listOfBlocks = { "ship", "enemie", "friend", "shoot" };
+        string[] listOfBlocks = { "ship", "enemie", "friend", "shoot", "titlePicture" };
         var separators = new[] { " ", "=", ";" ,"/"};
         Parameters.Clear();
         string endOfInit = "";
@@ -91,7 +91,7 @@ public class Init
                                     for (int y = 0; y < size[1]; y++)
                                         if (line != null) Ship[x, y] = line[y];
                                 }
-                                StartGame.ShipBody = Ship;
+                                //StartGame.ShipBody = Ship;
                                 break;
                             }
                             case "shoot":
