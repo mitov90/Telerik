@@ -21,7 +21,7 @@ public class Ship : GameObject
     {
         if (_timeOut <= 0)
         {
-            gameEngine.AddObject(new Fire(new MatrixCoords(topLeft.Row,topLeft.Col + (this.body.GetLength(1)/2)),new char[,] {{'*'}},new MatrixCoords(-1,0) ));
+            gameEngine.AddObject(new Fire(new MatrixCoords(topLeft.Row,topLeft.Col + (this.body.GetLength(1)/2)),Init.Shoot,new MatrixCoords(-1,0) ));
             _timeOut = StartGame.ShootTimeout;
         }
         _fuel--;
