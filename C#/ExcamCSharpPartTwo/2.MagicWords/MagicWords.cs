@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +12,7 @@ class MagicWords
             Console.SetIn(new StreamReader("test.txt"));
 
         int numLines = int.Parse(Console.ReadLine());
-        string[] words = new string[numLines];
-        StringBuilder sb = new StringBuilder();
+        var words = new string[numLines];
         int maxLenght = 0;
         for ( int i = 0; i < numLines; i++ )
         {
@@ -21,31 +21,45 @@ class MagicWords
                 maxLenght = words[i].Length;
         }
 
-        List<string> myList = new List<string> {  };
-        
-
+        List<string> myList = words.ToList();
        
-        PrintMagicSentance(words, sb, maxLenght);
+        Reorder(myList);
+        PrintMagic(myList, maxLenght);
 
     }
 
-    static void SwapIndex(ref string[] words, int firstIndex, int secondIndex)
+    private static void PrintMagic(List<string> myList, int maxLenght)
     {
-        string temp = words[firstIndex];
-        words[firstIndex] = words[secondIndex];
-        words[secondIndex] = temp;
-    }
-
-    private static void PrintMagicSentance(string[] words, StringBuilder sb, int maxLenght)
-    {
-        for ( int curLetter = 0; curLetter < maxLenght; curLetter++ )
+        var result = new StringBuilder();
+       
+        for (int curChar = 0; curChar <= maxLenght; curChar++)
         {
-            for ( int word = 0; word < words.GetLength(0); word++ )
+
+            for (int curWord = 0; curWord < myList.Count; curWord++)
             {
-                if ( words[word].Length > curLetter )
-                    sb.Append(words[word][curLetter]);
+                if (myList[curWord].Length > curChar)
+                result.Append(myList[curWord][curChar]);
             }
+
         }
-        Console.WriteLine(sb);
+        Console.Write(result);
+    }
+
+    private static void Reorder(IList<string> words )
+    {
+      for (int i = 0; i < words.Count; i++)
+            {
+                int index = words[i].Length % (words.Count + 1);
+                words.Insert(index, words[i]);
+                if (i > index)
+                {
+                    words.RemoveAt(i + 1);
+                }
+                else
+                {
+                    words.RemoveAt(i);
+                }
+            }
+       
     }
 }

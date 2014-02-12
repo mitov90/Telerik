@@ -10,6 +10,7 @@ public class Init
     public static Dictionary<string, int> Parameters = new Dictionary<string, int>(); 
     public static List<char[,]> Enemies=new List<char[,]>();
     public static List<char[,]> Friends = new List<char[,]>();
+    public static List<string> FriendNames=new List<string>();
     public static char[,] Ship;
     public static char[,] Shoot;
 
@@ -19,6 +20,11 @@ public class Init
         prop[0] = int.Parse(line[Array.IndexOf(line, "height") + 1]);
         prop[1] = int.Parse(line[Array.IndexOf(line, "width") + 1]);
         return prop;
+    }
+    public static string ReadMatrixName(string [] line)
+    {
+        var name = (line[Array.IndexOf(line, "name") + 1]);
+        return name;
     }
     public static void ReadInitFile()
     {
@@ -70,6 +76,8 @@ public class Init
                             }
                             case "friend":
                             {
+                                string friendName=ReadMatrixName(parametersAsStrings);
+                                FriendNames.Add(friendName); // to find by name in initialisation of objects in Main(), including startup screen and end of game screen
                                 size = ReadMatrixSize(parametersAsStrings);
                                 var matrix = new char[size[0], size[1]];
                                 for (int x = 0; x < size[0]; x++)

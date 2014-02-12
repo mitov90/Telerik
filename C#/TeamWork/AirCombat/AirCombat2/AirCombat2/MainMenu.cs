@@ -145,6 +145,7 @@ public class MainMenu
                     }
 
                 }
+                    //In there are missing files the game ends
                 catch (FileNotFoundException fe)
                 {
                     Console.WriteLine(fe.Message);

@@ -30,28 +30,16 @@ public class StartGame
 
     public static char[,] ShipBody;
 
-    public static char[,] RacketBody =
-    {
-      {'\\','*','*','/'},
-      {' ','|','|',' '},
-      {' ','\\','/',' '}
-    };
+    public static char[,] RacketBody;
+    //{
+    //       {'\\','*','*','/'},
+    //       {' ','|','|',' '},
+    //       {' ','\\','/',' '}
+    //     };
+   
+    public static char[,] FuelBody;
 
-    public static char[,] FuelBody =
-    {
-       {'/','-','-','\\'},
-       {'|','F','U','|'},
-       {'|','E','L','|'},
-       {'\\','-','-','/'}
-    };
-
-    public static char[,] LifeBody =
-    {
-       {'/','*','*','\\'},
-       {'|','L','I','|'},
-       {'|','F','E','|'},
-       {'\\','*','*','/'}
-    };
+    public static char[,] LifeBody;
 
     #endregion
 
@@ -62,7 +50,7 @@ public class StartGame
         var newObjects = new List<GameObject>();
 
         int racketIndex = RandGen.Next(Init.Enemies.Count);
-        char[,] racketBody = Init.Enemies[racketIndex];
+        var racketBody = Init.Enemies[racketIndex];
 
         if (RandGen.Next(100) < EnemiesChance) // torpedo
             newObjects.Add(new Racket(new MatrixCoords(0, RandGen.Next(WorldCols - RacketBody.GetLength(1) * 2) + RacketBody.GetLength(1) + 1), racketBody, new MatrixCoords(RandGen.Next(2) + 1, 0)));
@@ -82,12 +70,12 @@ public class StartGame
     private static void Main()
     {
         #region InitializeFromTextFile
-        Init.ReadInitFile();
-        MainMenu.consoleWidth = Init.Parameters["consoleWidth"];
-        MainMenu.consoleHeight = Init.Parameters["consoleHeight"];
+        Init.ReadInitFile();                                        //Method reads all variables to dictionary and char[,] objects to char[,] matrixes from .txt file 
+        MainMenu.consoleWidth = Init.Parameters["consoleWidth"];    //Here must initialize everything with values, read from the .txt file 
+        MainMenu.consoleHeight = Init.Parameters["consoleHeight"];  //FRIENDS are added 1 by 1, recognised by with their names in 2nd list
+        WorldRows = Init.Parameters["WorldRows"];                   // enemies are in list and random chosen because of their equal qualities
         MainMenu.offsetWidth = Init.Parameters["offsetWidth"];
         MainMenu.offsetHeight = Init.Parameters["offsetHeight"];
-        WorldRows = Init.Parameters["WorldRows"];
         WorldCols = Init.Parameters["WorldCols"];
         ThreadSleep = Init.Parameters["ThreadSleep"];
         EnemiesChance = Init.Parameters["EnemiesChance"];
@@ -98,6 +86,8 @@ public class StartGame
         FuelBonus = Init.Parameters["FuelBonus"];
         ShootTimeout = Init.Parameters["ShootTimeout"];
         ShipBody = Init.Ship;
+        FuelBody=Init.Friends[Init.FriendNames.IndexOf("FuelBody")];
+        LifeBody = Init.Friends[Init.FriendNames.IndexOf("LifeBody")];
 
         #endregion
 
