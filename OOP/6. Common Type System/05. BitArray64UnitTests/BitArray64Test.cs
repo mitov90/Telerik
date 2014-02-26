@@ -8,7 +8,7 @@ namespace BitArray64UnitTests
         [TestMethod]
         public void TestBitArray64Constructor1()
         {
-            BitArray64 bitArray = new BitArray64();
+            var bitArray = new BitArray64();
 
             Assert.AreEqual(0, bitArray[63]);
         }
@@ -16,7 +16,7 @@ namespace BitArray64UnitTests
         [TestMethod]
         public void TestBitArray64Constructor2()
         {
-            BitArray64 bitArray = new BitArray64(8388608);
+            var bitArray = new BitArray64(8388608);
 
             Assert.AreEqual(1, bitArray[23]);
         }
@@ -24,7 +24,7 @@ namespace BitArray64UnitTests
         [TestMethod]
         public void TestBitArray64Indexer1()
         {
-            BitArray64 bitArray = new BitArray64();
+            var bitArray = new BitArray64();
 
             bitArray[23] = 1;
             bitArray[24] = 1;
@@ -37,7 +37,7 @@ namespace BitArray64UnitTests
         [TestMethod]
         public void TestBitArray64Indexer2()
         {
-            BitArray64 bitArray = new BitArray64();
+            var bitArray = new BitArray64();
 
             bitArray[19] = 1;
             bitArray[49] = 1;
@@ -45,7 +45,7 @@ namespace BitArray64UnitTests
             bitArray[63] = 1;
 
             Assert.AreEqual(
-                "1100000000000010000000000000000000000000000010000000000000000000", bitArray.ToString());
+                            "1100000000000010000000000000000000000000000010000000000000000000", bitArray.ToString());
         }
     }
 }

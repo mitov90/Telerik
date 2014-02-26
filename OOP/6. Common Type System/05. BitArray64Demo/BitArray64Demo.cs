@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-class BitArray64Demo
+internal class BitArray64Demo
 {
-    static void Main()
+    private static void Main()
     {
-        BitArray64 bitArray = new BitArray64();
+        var bitArray = new BitArray64();
 
         bitArray[63] = 1;
         bitArray[62] = 1;

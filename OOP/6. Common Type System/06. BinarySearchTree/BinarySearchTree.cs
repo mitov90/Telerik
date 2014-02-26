@@ -8,14 +8,14 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
 {
     #region Private Fields
 
-    private StringBuilder itemsBuilder = new StringBuilder();
-    private const int PRIME_MULTIPLIER = 83;
-    private int count = 0;
+    private readonly StringBuilder _itemsBuilder = new StringBuilder();
+    private const int PrimeMultiplier = 83;
+    private int _count;
 
     /// <summary>
     /// The root of the tree
     /// </summary>
-    private BinaryTreeNode<T> root;
+    private BinaryTreeNode<T> _root;
 
     #endregion
 
@@ -25,7 +25,7 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
     {
         get
         {
-            return this.count;
+            return this._count;
         }
     }
 
@@ -69,7 +69,7 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
     {
         if (item != null)
         {
-            this.root = Add(item, this.root, null);
+            this._root = this.Add(item, this._root, null);
         }
         else
         {
@@ -83,7 +83,7 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
     /// <param name="item">The object to remove from the binary search tree.</param>
     public void Remove(T item)
     {
-        BinaryTreeNode<T> nodeToDelete = Find(item);
+        BinaryTreeNode<T> nodeToDelete = this.Find(item);
         if (nodeToDelete == null)
         {
             return;
@@ -94,30 +94,27 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
 
     public override string ToString()
     {
-        return AsString(true);
+        return this.AsString(true);
     }
 
     public string AsString(bool ascending)
     {
-        if (this.root == null)
+        if (this._root == null)
         {
             return String.Empty;
         }
+        this._itemsBuilder.Clear();
+        if (@ascending)
+        {
+            this.AsStringAscending(this._root);
+        }
         else
         {
-            itemsBuilder.Clear();
-            if (ascending)
-            {
-                AsStringAscending(this.root);
-            }
-            else
-            {
-                AsStringDescending(this.root);
-            }
-
-            // remove the extra comma and space at the end
-            return this.itemsBuilder.Remove(this.itemsBuilder.Length - 2, 2).ToString();
+            this.AsStringDescending(this._root);
         }
+
+        // remove the extra comma and space at the end
+        return this._itemsBuilder.Remove(this._itemsBuilder.Length - 2, 2).ToString();
     }
 
     public override bool Equals(object obj)
@@ -131,26 +128,26 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
             return false;
         }
 
-        return AreEqual(this.root, other.root);
+        return this.AreEqual(this._root, other._root);
     }
 
     public static bool operator ==(BinarySearchTree<T> a, BinarySearchTree<T> b)
     {
-        return BinarySearchTree<T>.Equals(a, b);
+        return Equals(a, b);
     }
 
     public static bool operator !=(BinarySearchTree<T> a, BinarySearchTree<T> b)
     {
-        return !(BinarySearchTree<T>.Equals(a, b));
+        return !(Equals(a, b));
     }
 
     public override int GetHashCode()
     {
         int result = 1;
 
-        if (this.root != null)
+        if (this._root != null)
         {
-            CalcHashCodePreorder(this.root, ref result);
+            this.CalcHashCodePreorder(this._root, ref result);
         }
 
         return result;
@@ -158,21 +155,21 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        if (this.root != null)
+        if (this._root != null)
         {
-            if (this.root.Left != null)
+            if (this._root.Left != null)
             {
-                foreach (BinaryTreeNode<T> node in this.root.Left)
+                foreach (BinaryTreeNode<T> node in this._root.Left)
                 {
                     yield return node.Item;
                 }
             }
 
-            yield return this.root.Item;
+            yield return this._root.Item;
 
-            if (this.root.Right != null)
+            if (this._root.Right != null)
             {
-                foreach (BinaryTreeNode<T> node in this.root.Right)
+                foreach (BinaryTreeNode<T> node in this._root.Right)
                 {
                     yield return node.Item;
                 }
@@ -197,7 +194,7 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
     public BinarySearchTree<T> Clone()
     {
         BinarySearchTree<T> clone = new BinarySearchTree<T>();
-        Copy(clone, this.root);
+        this.Copy(clone, this._root);
         return clone;
     }
 
@@ -209,11 +206,10 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
     {
         if (node == null)
         {
-            node = new BinaryTreeNode<T>(item);
-            node.Parent = parentNode;
+            node = new BinaryTreeNode<T>(item) {Parent = parentNode};
 
             // update count
-            this.count++;
+            this._count++;
         }
         else
         {
@@ -221,11 +217,11 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
 
             if (comparisonResult > 0)
             {
-                node.Left = Add(item, node.Left, node);
+                node.Left = this.Add(item, node.Left, node);
             }
             else if (comparisonResult < 0)
             {
-                node.Right = Add(item, node.Right, node);
+                node.Right = this.Add(item, node.Right, node);
             }
         }
 
@@ -237,14 +233,14 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
         if (node != null)
         {
             clone.Add(node.Item);
-            Copy(clone, node.Left);
-            Copy(clone, node.Right);
+            this.Copy(clone, node.Left);
+            this.Copy(clone, node.Right);
         }
     }
 
     private BinaryTreeNode<T> Find(T item)
     {
-        BinaryTreeNode<T> node = this.root;
+        BinaryTreeNode<T> node = this._root;
 
         while (node != null)
         {
@@ -272,13 +268,13 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
         // Case 3: If the node has two children
         if (node.Left != null && node.Right != null)
         {
-            BinaryTreeNode<T> replacement = Min(node.Right);
+            BinaryTreeNode<T> replacement = this.Min(node.Right);
             node.Item = replacement.Item;
             node = replacement;
         }
 
         // Case 1 and 2: If the node has at most one child
-        BinaryTreeNode<T> theChild = node.Left != null ? node.Left : node.Right;
+        BinaryTreeNode<T> theChild = node.Left ?? node.Right;
 
         if (theChild != null)
         {
@@ -288,7 +284,7 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
         // Handle the case when the element is the root
         if (node.Parent == null)
         {
-            root = theChild;
+            this._root = theChild;
         }
         else
         {
@@ -306,7 +302,7 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
         }
 
         // update count
-        this.count--;
+        this._count--;
     }
 
     private BinaryTreeNode<T> Min(BinaryTreeNode<T> node)
@@ -325,9 +321,9 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
     {
         if (node != null)
         {
-            AsStringAscending(node.Left);
-            this.itemsBuilder.AppendFormat("{0}, ", node.Item);
-            AsStringAscending(node.Right);
+            this.AsStringAscending(node.Left);
+            this._itemsBuilder.AppendFormat("{0}, ", node.Item);
+            this.AsStringAscending(node.Right);
         }
     }
 
@@ -335,9 +331,9 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
     {
         if (node != null)
         {
-            AsStringDescending(node.Right);
-            this.itemsBuilder.AppendFormat("{0}, ", node.Item);
-            AsStringDescending(node.Left);
+            this.AsStringDescending(node.Right);
+            this._itemsBuilder.AppendFormat("{0}, ", node.Item);
+            this.AsStringDescending(node.Left);
         }
     }
 
@@ -347,23 +343,20 @@ public class BinarySearchTree<T> : ICloneable, IEnumerable<T>
         {
             return true;
         }
-        else if (a != null && b != null)
+        if (a != null && b != null)
         {
-            return a == b && AreEqual(a.Left, b.Left) && AreEqual(a.Right, b.Right);
+            return a == b && this.AreEqual(a.Left, b.Left) && this.AreEqual(a.Right, b.Right);
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private void CalcHashCodePreorder(BinaryTreeNode<T> node, ref int hashCode)
     {
         if (node != null)
         {
-            hashCode = hashCode * PRIME_MULTIPLIER + node.GetHashCode();
-            CalcHashCodePreorder(node.Left, ref hashCode);
-            CalcHashCodePreorder(node.Right, ref hashCode);
+            hashCode = hashCode * PrimeMultiplier + node.GetHashCode();
+            this.CalcHashCodePreorder(node.Left, ref hashCode);
+            this.CalcHashCodePreorder(node.Right, ref hashCode);
         }
     }
 
