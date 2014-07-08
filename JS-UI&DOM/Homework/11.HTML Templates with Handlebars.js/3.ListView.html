@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>List View</title>
+    <script src="scripts/jquery.js"></script>
+    <script src = scripts/handlebars.js></script>
+    <script src="scripts/list-view.js"></script>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+
+<ul id="books-list" data-template="book-item-template"></ul>
+<script id="book-item-template" type="…">
+  <li class="book-item">
+    <a href="/#books/{{id}}">
+      <strong>{{title}}</strong>
+    </a>
+  </li>
+</script>
+
+<script>
+    var books = [
+        {
+            id: '100',
+            title: 'JavaScript: The Good Parts'
+        },
+        {
+            id: '101',
+            title: 'Secrets of JavaScript Ninja'
+        },
+        {
+            id: '102',
+            title: 'Core HTML5 Canvas'
+        },
+        {
+            id: '103',
+            title: 'JavaScript Patterns'
+        }
+    ];
+
+
+</script>
+
+</body>
+</html>

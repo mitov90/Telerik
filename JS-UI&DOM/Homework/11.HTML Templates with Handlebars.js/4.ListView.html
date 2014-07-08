@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>List view</title>
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/handlebars.js"></script>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Mark</th>
+    </tr>
+    </thead>
+    <tbody id="students-table">
+    <tr class="student-row">
+        <td>{{number}}</td>
+        <td>{{name}}</td>
+        <td>{{mark}}</td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    var students = [
+        {
+            number: '1',
+            name: 'Peter Petrov',
+            mark: '5.5'
+        },
+        {
+            number: '2',
+            name: 'Stamat Georgiev',
+            mark: '4.7'
+        },
+        {
+            number: '3',
+            name: 'Maria Todorova',
+            mark: '6'
+        },
+        {
+            number: '4',
+            name: 'Georgi Geshov',
+            mark: '3.7'
+        }
+    ];
+    window.onload = function () {
+        $('#students-table').listview(students);
+    }
+</script>
+
+<script>
+    $.fn.listview = function (data) {
+        $this = $(this);
+        var template = $this.html();
+        var templateOptions = Handlebars.compile(template);
+
+        var result = getHtmlResult(templateOptions, data);
+        $this.html(result);
+
+        function getHtmlResult(templateOptions, data) {
+            var result = "";
+            for (var i = 0, length = data.length; i < length; i += 1) {
+                result += templateOptions(data[i]);
+            }
+            return result;
+        }
+    }
+</script>
+</body>
+</html>

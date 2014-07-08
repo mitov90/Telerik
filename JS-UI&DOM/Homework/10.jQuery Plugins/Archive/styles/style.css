@@ -1,0 +1,37 @@
+li {
+    margin: 5px;
+    padding: 10px;
+    width: 50px;
+
+    border: 1px solid greenyellow;
+    border-radius: 25px;
+
+    text-align: center;
+    list-style-type: none;
+    background: gray;
+}
+
+button {
+    margin: 15px 50px;
+    padding: 10px;
+    width: 50px;
+    border-radius: 25px;
+}
+
+#message-box{
+}
+
+.message{
+    color: ghostwhite;
+    border-radius: 15px;
+    border: 5px solid darkcyan;
+    text-align: center;
+}
+.error {
+    background: darkred;
+}
+
+.success {
+    background: greenyellow;
+
+}

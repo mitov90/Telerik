@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>List View</title>
+    <script src="scripts/jquery.js"></script>
+    <script src=scripts/handlebars.js></script>
+    <script src="scripts/list-view.js"></script>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Mark</th>
+    </tr>
+    </thead>
+    <tbody id="students-table" data-template="students-row-template">
+    </tbody>
+</table>
+<script id="students-row-template" type="…">
+  <tr class="student-row">
+    <td>{{number}}</td>
+    <td>{{name}}</td>
+    <td>{{mark}}</td>
+  </tr>
+
+</script>
+
+<script>
+    var students = [
+        {
+            number: '1',
+            name: 'Peter Petrov',
+            mark: '5.5'
+        },
+        {
+            number: '2',
+            name: 'Stamat Georgiev',
+            mark: '4.7'
+        },
+        {
+            number: '3',
+            name: 'Maria Todorova',
+            mark: '6'
+        },
+        {
+            number: '4',
+            name: 'Georgi Geshov',
+            mark: '3.7'
+        }
+    ];
+
+    window.onload = function () {
+        $('#students-table').listview(students);
+    }
+</script>
+
+</body>
+</html>
