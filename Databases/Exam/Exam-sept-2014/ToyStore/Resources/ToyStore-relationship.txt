@@ -1,0 +1,3 @@
+Manufacturers-Toys -> 1-to-many
+AgeRanges-Toys -> 1-to-many
+Categories-Toys -> many-to-many

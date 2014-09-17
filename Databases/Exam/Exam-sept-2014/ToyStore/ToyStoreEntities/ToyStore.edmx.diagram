@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="02c1aa8fcf1945e48f93e4b75d260acf" Name="Diagram1">
+        <EntityTypeShape EntityType="ToysStoreModel.AgeRanx" Width="1.5" PointX="1.875" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ToysStoreModel.Category" Width="1.5" PointX="7" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ToysStoreModel.Manufacturer" Width="1.5" PointX="6.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ToysStoreModel.Toy" Width="1.5" PointX="4.375" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="ToysStoreModel.FK_Toys_AgeRanges" ManuallyRouted="false" />
+        <AssociationConnector Association="ToysStoreModel.FK_Toys_Manufacturers" ManuallyRouted="false" />
+        <AssociationConnector Association="ToysStoreModel.ToysCategories" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

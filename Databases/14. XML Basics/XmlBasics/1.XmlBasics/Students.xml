@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="students-xml2html.xsl"?>
+<students>
+	<student>
+    <name>Ivan Petkov</name>
+    <sex>male</sex>
+    <birthDate>1996-02-26</birthDate>
+  <phone>08888234123</phone>
+    <email>ivan.petkov@gmail.com</email>
+    <course>3</course>
+    <speciality>Medicine</speciality>
+    <facultyNumber>4573487</facultyNumber>
+    <enrollement>
+      <date>2012-01-20</date>
+      <examScore>5</examScore>
+      <teacherEndorsement>pesistiq</teacherEndorsement>
+    </enrollement>
+    <takenExams>
+      <exam>
+        <name>pharmacy</name>
+        <tutor>Gosho indjekciqta</tutor>
+      <score>6</score>
+      </exam>
+      <exam>
+        <name>blood info</name>
+        <tutor>Pesho cherveniq</tutor>
+      <score>6</score>
+      </exam>
+    </takenExams>
+	</student>
+	<student>
+    <name>Ivanka Simeonova</name>
+    <sex>female</sex>
+    <birthDate>1993-02-26</birthDate>
+  <phone>0888234123</phone>
+    <email>sexy.bomba@abv.bg</email>
+    <course>3</course>
+    <speciality>Agriculture</speciality>
+    <facultyNumber>69</facultyNumber>
+    <enrollement>
+      <date>2011-01-20</date>
+      <examScore>69</examScore>
+      <teacherEndorsement>lubimiq profesor</teacherEndorsement>
+    </enrollement>
+    <takenExams>
+      <exam>
+        <name>plants info</name>
+        <tutor>Gotiniq profesor</tutor>
+      <score>6</score>
+      </exam>
+      <exam>
+        <name>Biodynamics</name>
+        <tutor>Sladkiq profesor</tutor>
+      <score>6</score>
+      </exam>
+    </takenExams>
+	</student>
+</students>

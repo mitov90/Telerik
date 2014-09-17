@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--a XML file representing catalogue. The 
+catalogue should contain albums of different artists. 
+For each album you should define: name, artist, 
+year, producer, price and a list of songs. Each 
+song should be described by title and duration.-->
+<catalogue>
+  <album>
+    <name>EP2</name>
+    <artist>Pixies</artist>
+    <year>2014</year>
+    <producer>Gil Norton</producer>
+    <price>19.50</price>
+    <songs>
+      <song>
+        <title>Blue Eyed Hexe</title>
+        <duration>3:12</duration>
+      </song>
+      <song>
+        <title>Magdalena</title>
+        <duration>3:25</duration>
+      </song>
+      <song>
+        <title>Greens and Blues</title>
+        <duration>3:47</duration>
+      </song>
+      <song>
+        <title>Snakes</title>
+        <duration>3:46</duration>
+      </song>
+    </songs>
+  </album>
+  <album>
+    <name>Leaving</name>
+    <artist>Skrillex</artist>
+    <year>2013</year>
+    <producer>Skrillex</producer>
+    <price>9.50</price>
+    <songs>
+      <song>
+        <title>Scary Bolly Dub</title>
+        <duration>3:39</duration>
+      </song>
+      <song>
+        <title>The Reason</title>
+        <duration>4:17</duration>
+      </song>
+      <song>
+        <title>Leaving</title>
+        <duration>4:46</duration>
+      </song>
+    </songs>
+  </album>
+  <album>
+    <name>Reborn in Defiance</name>
+    <artist>Biohazard</artist>
+    <year>2012</year>
+    <producer>Toby Wright</producer>
+    <price>12.00</price>
+    <songs>
+      <song>
+        <title>Vengeance Is Mine</title>
+        <duration>3:24</duration>
+      </song>
+      <song>
+        <title>Decay</title>
+        <duration>4:24</duration>
+      </song>
+      <song>
+        <title>Reborn</title>
+        <duration>4:52</duration>
+      </song>
+      <song>
+        <title>Killing Me</title>
+        <duration>4:49</duration>
+      </song>
+    </songs>
+  </album>
+</catalogue>
