@@ -1,0 +1,22 @@
+<div class="container">
+    <form>
+        <button class="info btn-sm" ng-click="join()">Join trip</button>
+    </form>
+    <p class="text-center"><h3>
+        {{ trip.driverName }}
+</h3>
+    </p><p>
+    {{ trip.departureDate }}
+
+</p><p>
+   From: {{ trip.from }}
+
+</p><p>
+    To: {{ trip.to }}
+
+</p><p>
+   Number free seats: {{ trip.numberOfFreeSeats }}
+</p>Passangers:<p ng-repeat="pass in trip.passengers">
+    {{ pass }}
+</p>
+</div>

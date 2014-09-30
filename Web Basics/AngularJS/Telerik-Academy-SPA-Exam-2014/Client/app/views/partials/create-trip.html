@@ -1,0 +1,24 @@
+<div class="container">
+
+    <h3>Create a new trip</h3>
+
+    <form name="createTripForm"  class="form-horizontal">
+        <label for="fromCity">From: </label>
+        <input type="text" required="required" class="form-control" id="fromCity" ng-model="trip.from">
+        <label for="toCity">To: </label>
+        <input type="text"  required="required" class="form-control" id="toCity" ng-model="trip.to">
+        <label for="seats">Available seats: </label>
+        <input type="text" required="required"  id="seats"  pattern="^\d+$" class="form-control" ng-model="trip.availableSeats">
+        <label for="time">Departure date: </label>
+        <input type="datetime" required="required" class="form-control" pattern="^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))" id="time" ng-model="trip.departureTime" placeholder="ex. 01/01/2015 12:12 ">
+        <div class="pull-right">
+            <button required="required" ng-disabled="createTripForm.$invalid" ng-click="create(trip)" class=" btn btn-primary">Create
+            </button>
+            <a href="#/trips"  class="btn btn-default">Cancel</a>
+        </div>
+    </form>
+</div>
+
+
+
+

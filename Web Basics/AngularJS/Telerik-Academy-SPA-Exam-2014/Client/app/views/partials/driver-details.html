@@ -1,0 +1,22 @@
+<div class="container-fluid">
+   <h2 class="h2">{{ driver.name }}</h2>
+    <div>
+        <h4>
+        Upcoming trips: {{ driver.numberOfUpcomingTrips }}
+        Total trips: {{ driver.numberOfTotalTrips }}
+        </h4>
+    </div>
+    <h4 class="text-center">        Sorting by click on tables headers!!
+    </h4>
+<form class="pull-right">
+    <input id="mine" type="checkbox" ng-model="mine" ng-click="showMine(driver.id)">
+    <label for="mine">Only mine trips</label>
+
+    <input id="driverTrips" type="checkbox" ng-model="other" ng-click="showDriverTrips()">
+    <label for="driverTrips">Only driver trips</label>
+
+</form>
+    <div trip-directive>
+        {{ driver.trips }}
+    </div>
+</div>
