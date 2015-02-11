@@ -1,16 +1,17 @@
-﻿using BloggingSystem.Data;
-using BloggingSystem.Models;
-using BloggingSystem.Services.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-namespace BloggingSystem.Services.Controllers
+﻿namespace BloggingSystem.Services.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using BloggingSystem.Data;
+    using BloggingSystem.Models;
+    using BloggingSystem.Services.Models;
+
     public class PostsController : ApiController
     {
         [HttpGet]
@@ -18,7 +19,7 @@ namespace BloggingSystem.Services.Controllers
         {
             try
             {
-                var sessionKey = ApiControllerHelper.GetHeaderValue(Request.Headers, "X-SessionKey");
+                var sessionKey = ApiControllerHelper.GetHeaderValue(this.Request.Headers, "X-SessionKey");
                 if (sessionKey == null)
                 {
                     throw new ArgumentNullException("No session key provided in the request header!");
@@ -35,12 +36,12 @@ namespace BloggingSystem.Services.Controllers
 
                 var posts = context.Posts.Include(p => p.Tags).Include(p => p.Comments);
 
-                var postDtos = GetAllPostDtos(posts);
+                var postDtos = this.GetAllPostDtos(posts);
                 return postDtos.OrderByDescending(p => p.PostDate);
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
         }
@@ -57,7 +58,7 @@ namespace BloggingSystem.Services.Controllers
         {
             try
             {
-                var sessionKey = ApiControllerHelper.GetHeaderValue(Request.Headers, "X-SessionKey");
+                var sessionKey = ApiControllerHelper.GetHeaderValue(this.Request.Headers, "X-SessionKey");
                 if (sessionKey == null)
                 {
                     throw new ArgumentNullException("No session key provided in the request header!");
@@ -72,17 +73,17 @@ namespace BloggingSystem.Services.Controllers
                     throw new InvalidOperationException("Invalid username or password.");
                 }
 
-                var posts = context.Posts
-                    .Include(p => p.Tags)
-                    .Include(p => p.Comments)
-                    .Where(p => p.Title.ToLower().IndexOf(keyword.ToLower()) >= 0);
+                var posts =
+                    context.Posts.Include(p => p.Tags)
+                        .Include(p => p.Comments)
+                        .Where(p => p.Title.ToLower().IndexOf(keyword.ToLower()) >= 0);
 
-                var postDtos = GetAllPostDtos(posts);
+                var postDtos = this.GetAllPostDtos(posts);
                 return postDtos.OrderByDescending(p => p.PostDate);
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
         }
@@ -92,7 +93,7 @@ namespace BloggingSystem.Services.Controllers
         {
             try
             {
-                var sessionKey = ApiControllerHelper.GetHeaderValue(Request.Headers, "X-SessionKey");
+                var sessionKey = ApiControllerHelper.GetHeaderValue(this.Request.Headers, "X-SessionKey");
                 if (sessionKey == null)
                 {
                     throw new ArgumentNullException("No session key provided in the request header!");
@@ -107,19 +108,19 @@ namespace BloggingSystem.Services.Controllers
                     throw new InvalidOperationException("Invalid username or password.");
                 }
 
-                string[] tagsSpecified = tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var tagsSpecified = tags.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                var posts = context.Posts
-                    .Include(p => p.Tags)
-                    .Include(p => p.Comments)
-                    .Where(p => tagsSpecified.All(s => p.Tags.Any(t => string.Compare(t.Name, s, true) == 0)));
+                var posts =
+                    context.Posts.Include(p => p.Tags)
+                        .Include(p => p.Comments)
+                        .Where(p => tagsSpecified.All(s => p.Tags.Any(t => string.Compare(t.Name, s, true) == 0)));
 
-                var postDtos = GetAllPostDtos(posts);
+                var postDtos = this.GetAllPostDtos(posts);
                 return postDtos.OrderByDescending(p => p.PostDate);
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
         }
@@ -129,14 +130,14 @@ namespace BloggingSystem.Services.Controllers
         {
             try
             {
-                var sessionKey = ApiControllerHelper.GetHeaderValue(Request.Headers, "X-SessionKey");
+                var sessionKey = ApiControllerHelper.GetHeaderValue(this.Request.Headers, "X-SessionKey");
                 if (sessionKey == null)
                 {
                     throw new ArgumentNullException("No session key provided in the request header!");
                 }
 
-                Validate(value.Title, "title");
-                Validate(value.Text, "text");
+                this.Validate(value.Title, "title");
+                this.Validate(value.Text, "text");
 
                 var context = new BloggingSystemContext();
 
@@ -148,19 +149,19 @@ namespace BloggingSystem.Services.Controllers
                         throw new ArgumentException("Users must be logged in to create posts!");
                     }
 
-                    var newPost = new Post()
-                    {
-                        Title = value.Title,
-                        Text = value.Text,
-                        PostDate = DateTime.Now,
-                        Author = user
-                    };
+                    var newPost = new Post
+                                      {
+                                          Title = value.Title, 
+                                          Text = value.Text, 
+                                          PostDate = DateTime.Now, 
+                                          Author = user
+                                      };
 
-                    string[] tagsFromTitle = value.Title.Split(
-                        new char[] { ' ', ',', '.', ';', '!', '?', ':' },
+                    var tagsFromTitle = value.Title.Split(
+                        new[] { ' ', ',', '.', ';', '!', '?', ':' }, 
                         StringSplitOptions.RemoveEmptyEntries);
 
-                    List<string> tagsToCheck = new List<string>();
+                    var tagsToCheck = new List<string>();
 
                     foreach (var tagFromTitle in tagsFromTitle)
                     {
@@ -169,22 +170,19 @@ namespace BloggingSystem.Services.Controllers
 
                     if (value.Tags != null)
                     {
-                        foreach (string tagName in value.Tags)
+                        foreach (var tagName in value.Tags)
                         {
                             tagsToCheck.Add(tagName);
                         }
                     }
 
-                    foreach (string tagName in tagsToCheck)
+                    foreach (var tagName in tagsToCheck)
                     {
                         var matchingTag = context.Tags.FirstOrDefault(t => string.Compare(t.Name, tagName, true) == 0);
                         if (matchingTag == null)
                         {
                             // tag not found, insert it in the database
-                            matchingTag = new Tag
-                            {
-                                Name = tagName.ToLower()
-                            };
+                            matchingTag = new Tag { Name = tagName.ToLower() };
 
                             context.Tags.Add(matchingTag);
                             context.SaveChanges();
@@ -196,21 +194,21 @@ namespace BloggingSystem.Services.Controllers
                     context.Posts.Add(newPost);
                     context.SaveChanges();
 
-                    var createdPostDto = new CreatePostDto()
-                    {
-                        Id = newPost.Id,
-                        Title = newPost.Title,
-                        Tags = newPost.Tags.Select(t => t.Name),
-                        Text = newPost.Text
-                    };
+                    var createdPostDto = new CreatePostDto
+                                             {
+                                                 Id = newPost.Id, 
+                                                 Title = newPost.Title, 
+                                                 Tags = newPost.Tags.Select(t => t.Name), 
+                                                 Text = newPost.Text
+                                             };
 
-                    var response = Request.CreateResponse(HttpStatusCode.Created, createdPostDto);
+                    var response = this.Request.CreateResponse(HttpStatusCode.Created, createdPostDto);
                     return response;
                 }
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
         }
@@ -221,13 +219,13 @@ namespace BloggingSystem.Services.Controllers
         {
             try
             {
-                var sessionKey = ApiControllerHelper.GetHeaderValue(Request.Headers, "X-SessionKey");
+                var sessionKey = ApiControllerHelper.GetHeaderValue(this.Request.Headers, "X-SessionKey");
                 if (sessionKey == null)
                 {
                     throw new ArgumentNullException("No session key provided in the request header!");
                 }
 
-                Validate(value.Text, "text");
+                this.Validate(value.Text, "text");
 
                 var context = new BloggingSystemContext();
 
@@ -245,51 +243,49 @@ namespace BloggingSystem.Services.Controllers
                         throw new ArgumentException("Invalid post id: " + postId);
                     }
 
-                    var newComment = new Comment()
-                    {
-                        Text = value.Text,
-                        PostDate = DateTime.Now,
-                        Author = user,
-                        Post = post
-                    };
+                    var newComment = new Comment
+                                         {
+                                             Text = value.Text, 
+                                             PostDate = DateTime.Now, 
+                                             Author = user, 
+                                             Post = post
+                                         };
 
                     context.Comments.Add(newComment);
                     context.SaveChanges();
 
-                    var response = Request.CreateResponse(HttpStatusCode.OK);
+                    var response = this.Request.CreateResponse(HttpStatusCode.OK);
                     return response;
                 }
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
         }
 
-        #region Private Fields
-
         private IQueryable<PostDto> GetAllPostDtos(IQueryable<Post> posts)
         {
-            var postDtos =
-                from post in posts
-                select new PostDto()
-                {
-                    Id = post.Id,
-                    Title = post.Title,
-                    Author = post.Author.DisplayName,
-                    PostDate = post.PostDate,
-                    Text = post.Text,
-                    Tags = post.Tags.Select(t => t.Name).OrderBy(n => n),
-                    Comments =
-                    (from comment in post.Comments
-                     select new CommentDto
-                     {
-                         Text = comment.Text,
-                         Author = comment.Author.DisplayName,
-                         PostDate = comment.PostDate
-                     })
-                };
+            var postDtos = from post in posts
+                           select
+                               new PostDto
+                                   {
+                                       Id = post.Id, 
+                                       Title = post.Title, 
+                                       Author = post.Author.DisplayName, 
+                                       PostDate = post.PostDate, 
+                                       Text = post.Text, 
+                                       Tags = post.Tags.Select(t => t.Name).OrderBy(n => n), 
+                                       Comments = from comment in post.Comments
+                                                   select
+                                                       new CommentDto
+                                                           {
+                                                               Text = comment.Text, 
+                                                               Author = comment.Author.DisplayName, 
+                                                               PostDate = comment.PostDate
+                                                           }
+                                   };
 
             return postDtos.AsQueryable();
         }
@@ -301,7 +297,5 @@ namespace BloggingSystem.Services.Controllers
                 throw new ArgumentException(paramName, "Value cannot be null or empty.");
             }
         }
-
-        #endregion
     }
 }

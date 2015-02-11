@@ -1,28 +1,39 @@
-﻿using BloggingSystem.Data;
-using BloggingSystem.Models;
-using BloggingSystem.Services.Models;
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
-
-namespace BloggingSystem.Services.Controllers
+﻿namespace BloggingSystem.Services.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web.Http;
+
+    using BloggingSystem.Data;
+    using BloggingSystem.Models;
+    using BloggingSystem.Services.Models;
+
     public class UsersController : ApiController
     {
         private const int MinUsernameLength = 6;
+
         private const int MaxUsernameLength = 30;
+
         private const int MinDisplayNameLength = 6;
+
         private const int MaxDisplayNameLength = 30;
-        private const string ValidUsernameCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._";
-        private const string ValidDisplayNameCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._ -";
+
+        private const string ValidUsernameCharacters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._";
+
+        private const string ValidDisplayNameCharacters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._ -";
+
         private const string SessionKeyCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
         private const int SessionKeyLength = 50;
+
         private const int Sha1HashLength = 40;
 
-        private static readonly Random randomNumberGenerator = new Random();
+        private static readonly Random RandomNumberGenerator = new Random();
 
         [HttpPost]
         [ActionName("register")]
@@ -35,36 +46,36 @@ namespace BloggingSystem.Services.Controllers
                 context = new BloggingSystemContext();
 
                 this.ValidateUserIdentifier(
-                    value.Username,
-                    "Username",
-                    MinUsernameLength,
-                    MaxUsernameLength,
+                    value.Username, 
+                    "Username", 
+                    MinUsernameLength, 
+                    MaxUsernameLength, 
                     ValidUsernameCharacters);
 
                 this.ValidateUserIdentifier(
-                    value.DisplayName,
-                    "Display name",
-                    MinDisplayNameLength,
-                    MaxDisplayNameLength,
+                    value.DisplayName, 
+                    "Display name", 
+                    MinDisplayNameLength, 
+                    MaxDisplayNameLength, 
                     ValidDisplayNameCharacters);
 
                 this.ValidateAuthCode(value.AuthCode);
 
-                var user = context.Users.FirstOrDefault(
-                    u => u.Username == value.Username ||
-                        u.DisplayName == value.DisplayName);
+                var user =
+                    context.Users.FirstOrDefault(
+                        u => u.Username == value.Username || u.DisplayName == value.DisplayName);
 
                 if (user != null)
                 {
                     throw new InvalidOperationException("User already exists.");
                 }
 
-                user = new User()
-                {
-                    Username = value.Username,
-                    DisplayName = value.DisplayName,
-                    AuthCode = value.AuthCode
-                };
+                user = new User
+                           {
+                               Username = value.Username, 
+                               DisplayName = value.DisplayName, 
+                               AuthCode = value.AuthCode
+                           };
 
                 context.Users.Add(user);
                 context.SaveChanges();
@@ -72,18 +83,14 @@ namespace BloggingSystem.Services.Controllers
                 user.SessionKey = this.GenerateSessionKey(user.Id);
                 context.SaveChanges();
 
-                var loggedUserDto = new LoggedUserDto()
-                {
-                    DisplayName = user.DisplayName,
-                    SessionKey = user.SessionKey
-                };
+                var loggedUserDto = new LoggedUserDto { DisplayName = user.DisplayName, SessionKey = user.SessionKey };
 
-                var response = Request.CreateResponse(HttpStatusCode.Created, loggedUserDto);
+                var response = this.Request.CreateResponse(HttpStatusCode.Created, loggedUserDto);
                 return response;
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
             finally
@@ -106,16 +113,15 @@ namespace BloggingSystem.Services.Controllers
                 context = new BloggingSystemContext();
 
                 this.ValidateUserIdentifier(
-                    value.Username,
-                    "Username",
-                    MinUsernameLength,
-                    MaxUsernameLength,
+                    value.Username, 
+                    "Username", 
+                    MinUsernameLength, 
+                    MaxUsernameLength, 
                     ValidUsernameCharacters);
                 this.ValidateAuthCode(value.AuthCode);
 
-                var user = context.Users.FirstOrDefault(
-                    u => u.Username == value.Username &&
-                        u.AuthCode == value.AuthCode);
+                var user =
+                    context.Users.FirstOrDefault(u => u.Username == value.Username && u.AuthCode == value.AuthCode);
 
                 if (user == null)
                 {
@@ -128,18 +134,14 @@ namespace BloggingSystem.Services.Controllers
                     context.SaveChanges();
                 }
 
-                var loggedUserDto = new LoggedUserDto()
-                {
-                    DisplayName = user.DisplayName,
-                    SessionKey = user.SessionKey
-                };
+                var loggedUserDto = new LoggedUserDto { DisplayName = user.DisplayName, SessionKey = user.SessionKey };
 
-                var response = Request.CreateResponse(HttpStatusCode.Accepted, loggedUserDto);
+                var response = this.Request.CreateResponse(HttpStatusCode.Accepted, loggedUserDto);
                 return response;
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
             finally
@@ -159,7 +161,7 @@ namespace BloggingSystem.Services.Controllers
 
             try
             {
-                string sessionKey = ApiControllerHelper.GetHeaderValue(Request.Headers, "X-SessionKey");
+                var sessionKey = ApiControllerHelper.GetHeaderValue(this.Request.Headers, "X-SessionKey");
                 if (sessionKey == null)
                 {
                     throw new ArgumentNullException("No session key provided in the request header!");
@@ -177,12 +179,12 @@ namespace BloggingSystem.Services.Controllers
                 user.SessionKey = null;
                 context.SaveChanges();
 
-                var response = Request.CreateResponse(HttpStatusCode.OK);
+                var response = this.Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
             catch (Exception ex)
             {
-                var errorResponse = Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                var errorResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errorResponse);
             }
             finally
@@ -194,16 +196,14 @@ namespace BloggingSystem.Services.Controllers
             }
         }
 
-        #region Private Methods
-
         private string GenerateSessionKey(int id)
         {
-            StringBuilder sessionKeyBuilder = new StringBuilder(SessionKeyLength);
+            var sessionKeyBuilder = new StringBuilder(SessionKeyLength);
             sessionKeyBuilder.Append(id);
 
             while (sessionKeyBuilder.Length < SessionKeyLength)
             {
-                var index = randomNumberGenerator.Next(SessionKeyCharacters.Length);
+                var index = RandomNumberGenerator.Next(SessionKeyCharacters.Length);
                 sessionKeyBuilder.Append(SessionKeyCharacters[index]);
             }
 
@@ -218,41 +218,38 @@ namespace BloggingSystem.Services.Controllers
             }
         }
 
-        private void ValidateUserIdentifier(string name, string nameType, int minLength, int maxLength, string validCharacters)
+        private void ValidateUserIdentifier(
+            string name, 
+            string nameType, 
+            int minLength, 
+            int maxLength, 
+            string validCharacters)
         {
             if (name == null)
             {
                 throw new ArgumentNullException("name", string.Format("{0} cannot be null.", nameType));
             }
-            else if (name.Length < minLength)
+
+            if (name.Length < minLength)
             {
                 throw new ArgumentOutOfRangeException(
-                    "name",
-                    string.Format(
-                    "{0} must be at least {1} characters long.",
-                    nameType,
-                    MinUsernameLength));
+                    "name", 
+                    string.Format("{0} must be at least {1} characters long.", nameType, MinUsernameLength));
             }
-            else if (name.Length > maxLength)
+
+            if (name.Length > maxLength)
             {
                 throw new ArgumentOutOfRangeException(
-                    "name",
-                    string.Format(
-                    "{0} must be less than {1} characters long.",
-                    nameType,
-                    maxLength));
+                    "name", 
+                    string.Format("{0} must be less than {1} characters long.", nameType, maxLength));
             }
-            else if (name.Any(ch => !validCharacters.Contains(ch)))
+
+            if (name.Any(ch => !validCharacters.Contains(ch)))
             {
                 throw new ArgumentOutOfRangeException(
-                    "name",
-                    string.Format(
-                    "{0} must contain only the following characters: {1}",
-                    nameType,
-                    validCharacters));
+                    "name", 
+                    string.Format("{0} must contain only the following characters: {1}", nameType, validCharacters));
             }
         }
-
-        #endregion
     }
 }

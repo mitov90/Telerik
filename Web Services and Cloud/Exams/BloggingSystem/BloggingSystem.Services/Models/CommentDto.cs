@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Web;
-
-namespace BloggingSystem.Services.Models
+﻿namespace BloggingSystem.Services.Models
 {
+    using System;
+    using System.Runtime.Serialization;
+
     [DataContract(Name = "comment")]
     public class CommentDto
     {

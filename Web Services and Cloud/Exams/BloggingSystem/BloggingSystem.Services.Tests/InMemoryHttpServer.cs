@@ -1,20 +1,20 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
-
-namespace BloggingSystem.Services.Tests
+﻿namespace BloggingSystem.Services.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web.Http;
+
+    using Newtonsoft.Json;
+
     internal class InMemoryHttpServer
     {
+        private readonly string baseUrl;
+
         private readonly HttpClient client;
-        private string baseUrl;
-        private IEnumerable<Route> routes;
+
+        private readonly IEnumerable<Route> routes;
 
         public InMemoryHttpServer(string baseUrl)
             : this(baseUrl, new List<Route>())
@@ -33,11 +33,14 @@ namespace BloggingSystem.Services.Tests
             this.client = new HttpClient(server);
         }
 
-        public HttpResponseMessage Get(string requestUrl, IDictionary<string, string> headers = null, string mediaType = "application/json")
+        public HttpResponseMessage Get(
+            string requestUrl, 
+            IDictionary<string, string> headers = null, 
+            string mediaType = "application/json")
         {
             var url = requestUrl;
             var request = new HttpRequestMessage();
-            request.RequestUri = new Uri(baseUrl + url);
+            request.RequestUri = new Uri(this.baseUrl + url);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
             request.Method = HttpMethod.Get;
             if (headers != null)
@@ -52,11 +55,15 @@ namespace BloggingSystem.Services.Tests
             return response;
         }
 
-        public HttpResponseMessage Post(string requestUrl, object data, IDictionary<string, string> headers = null, string mediaType = "application/json")
+        public HttpResponseMessage Post(
+            string requestUrl, 
+            object data, 
+            IDictionary<string, string> headers = null, 
+            string mediaType = "application/json")
         {
             var url = requestUrl;
             var request = new HttpRequestMessage();
-            request.RequestUri = new Uri(baseUrl + url);
+            request.RequestUri = new Uri(this.baseUrl + url);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
             request.Method = HttpMethod.Post;
             request.Content = new StringContent(JsonConvert.SerializeObject(data));
@@ -68,15 +75,19 @@ namespace BloggingSystem.Services.Tests
                     request.Headers.Add(header.Key, header.Value);
                 }
             }
+
             var response = this.client.SendAsync(request).Result;
             return response;
         }
 
-        public HttpResponseMessage Put(string requestUrl, IDictionary<string, string> headers = null, string mediaType = "application/json")
+        public HttpResponseMessage Put(
+            string requestUrl, 
+            IDictionary<string, string> headers = null, 
+            string mediaType = "application/json")
         {
             var url = requestUrl;
             var request = new HttpRequestMessage();
-            request.RequestUri = new Uri(baseUrl + url);
+            request.RequestUri = new Uri(this.baseUrl + url);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
             request.Method = HttpMethod.Put;
             if (headers != null)
@@ -95,10 +106,7 @@ namespace BloggingSystem.Services.Tests
         {
             foreach (var route in this.routes)
             {
-                routeCollection.MapHttpRoute(
-                    route.Name,
-                    route.Template,
-                    route.Defaults);
+                routeCollection.MapHttpRoute(route.Name, route.Template, route.Defaults);
             }
         }
 
